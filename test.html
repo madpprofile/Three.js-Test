@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Dice</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				margin: 0px;
+				background-color: #000000;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Can you see me?</h1>
+
+		<script src="https://threejs.org/build/three.min.js"></script>
+		<script>
+			var camera, scene, renderer;
+			var mesh;
+			init();
+			animate();
+			function init() {
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+				camera.position.z = 400;
+				scene = new THREE.Scene();
+				var texture = new THREE.TextureLoader().load( 'textures/dice.png' );
+				var geometry = new THREE.CubeGeometry( 200, 200, 200 );
+				var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+				var d1 = [new THREE.Vector2(.25, .333), new THREE.Vector2(.5, .333),
+					new THREE.Vector2(.5, .666), new THREE.Vector2(.25, .666)];
+				var d2 = [new THREE.Vector2(0, .333), new THREE.Vector2(.25, .333),
+					new THREE.Vector2(.25, .666), new THREE.Vector2(0, .666)];
+				var d3 = [new THREE.Vector2(.25, .666), new THREE.Vector2(.5, .666),
+					new THREE.Vector2(.5, 1), new THREE.Vector2(.25, 1)];
+				var d4 = [new THREE.Vector2(.25, 0), new THREE.Vector2(.5, 0),
+					new THREE.Vector2(.5, .333), new THREE.Vector2(.25, .333)];
+				var d5 = [new THREE.Vector2(.5, .333), new THREE.Vector2(.75, .333),
+					new THREE.Vector2(.75, .666), new THREE.Vector2(.5, .666)];
+				var d6 = [new THREE.Vector2(.75, .333), new THREE.Vector2(1, .333),
+					new THREE.Vector2(1, .666), new THREE.Vector2(.75, .666)];
+
+				geometry.faceVertexUvs[0] = [];
+				geometry.faceVertexUvs[0][0]  = [ d1[0], d1[1], d1[3] ];
+				geometry.faceVertexUvs[0][1]  = [ d1[1], d1[2], d1[3] ];
+
+				geometry.faceVertexUvs[0][2]  = [ d6[0], d6[1], d6[3] ];
+				geometry.faceVertexUvs[0][3]  = [ d6[1], d6[2], d6[3] ];
+
+				geometry.faceVertexUvs[0][4]  = [ d3[0], d3[1], d3[3] ];
+				geometry.faceVertexUvs[0][5]  = [ d3[1], d3[2], d3[3] ];
+
+				geometry.faceVertexUvs[0][6]  = [ d4[0], d4[1], d4[3] ];
+				geometry.faceVertexUvs[0][7]  = [ d4[1], d4[2], d4[3] ];
+
+				geometry.faceVertexUvs[0][8]  = [ d5[0], d5[1], d5[3] ];
+				geometry.faceVertexUvs[0][9]  = [ d5[1], d5[2], d5[3] ];
+
+				geometry.faceVertexUvs[0][10] = [ d2[0], d2[1], d2[3] ];
+				geometry.faceVertexUvs[0][11] = [ d2[1], d2[2], d2[3] ];
+
+				mesh = new THREE.Mesh( geometry, material );
+				scene.add( mesh );
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+				//
+				window.addEventListener( 'resize', onWindowResize, false );
+			}
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+			function animate() {
+				requestAnimationFrame( animate );
+				mesh.rotation.x += 0.005;
+				mesh.rotation.y += 0.01;
+				renderer.render( scene, camera );
+			}
+		</script>
+		<h1>'cause I can see you!</h1>
+	</body>
+</html>
